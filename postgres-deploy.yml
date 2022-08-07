@@ -1,0 +1,46 @@
+---
+# Postgres deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-app-deploy
+  labels:
+    name: postgres-app-deploy
+    app: demo-postgres-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres-app-pod
+      app: demo-postgres-app
+  template:
+    metadata:
+      name: postgres-app-pod
+      labels:
+        name: postgres-app-pod
+        app: demo-postgres-app
+    spec:
+      containers:
+        - name: postgres-app-pod
+          image: postgres
+          ports:
+            - containerPort: 80
+          env:
+            - name: POSTGRES_DB
+              value: "postgres"
+            - name: POSTGRES_USER
+              value: "abuqasem"
+            - name: POSTGRES_PASSWORD
+              value: "abuqasem@123"
+---
+# postgres service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+spec:
+  selector:
+    app: demo-postgres-app
+  ports:
+  - port: 5432
+    targetPort: 5432

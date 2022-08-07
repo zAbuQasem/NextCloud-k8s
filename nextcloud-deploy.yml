@@ -1,0 +1,46 @@
+---
+# Nexcloud deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-app-deploy
+  labels:
+    name: nextcloud-app-deployment
+    app: demo-nextcloud-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: nextcloud-app-deployment
+      app: demo-nextcloud-app-deployment
+  template:
+    metadata:
+      name: nextcloud-app-pod
+      labels:
+        name: nextcloud-app-deployment
+        app: demo-nextcloud-app-deployment
+    spec:
+      containers:
+        - name: nextcloud-app-pod
+          image: nextcloud
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: nextcloud-env
+---
+# Nextcloud service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-svc
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    name: nextcloud-app-deployment
+    app: demo-nextcloud-app-deployment

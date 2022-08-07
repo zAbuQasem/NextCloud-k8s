@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nextcloud-env
+data:
+  POSTGRES_DB: nextcloud
+  POSTGRES_USER: abuqasem
+  POSTGRES_PASSWORD: abuqasem@123
+  POSTGRES_HOST: postgres-svc
+  REDIS_HOST: redis-svc
+  REDIS_HOST_PASSWORD: abuqasem@123
+  NEXTCLOUD_ADMIN_USER: abuqasem
+  NEXTCLOUD_ADMIN_PASSWORD: abuqasem@123

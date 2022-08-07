@@ -1,0 +1,44 @@
+---
+# Redis deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-app-deploy
+  labels:
+    name: redis-app-deploy
+    app: demo-redis-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: redis-app-pod
+      app: demo-redis-app
+  template:
+    metadata:
+      name: redis-app-pod
+      labels:
+        name: redis-app-pod
+        app: demo-redis-app
+    spec:
+      containers:
+      - name: redis-app-pod
+        image: redis
+        ports:
+        - containerPort: 80
+        command:
+          - redis-server
+        args:
+          - --requirepass
+          - "abuqasem@123"
+---
+# redis service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-svc
+spec:
+  selector:
+    app: demo-redis-app
+  ports:
+  - port: 6379
+    targetPort: 6379
